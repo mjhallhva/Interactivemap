@@ -23,7 +23,10 @@
   <!-- Load Spiderfier -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier-Leaflet/0.2.6/oms.min.js"></script>
 
-
+<!-- Load Marker Cluster -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
   
   <!-- Position the map and title with Cascading Style Sheet (.css) -->
   <style>
@@ -130,7 +133,20 @@ L.easyButton('<span class="target">&euro;</span>', function(btn, map){
   var runLayer = omnivore.csv('data.csv', null, customLayer)
   .on('ready', function() {
    map.fitBounds(runLayer.getBounds());
-  }).addTo(map);
+	var markers = L.markerClusterGroup({
+        showCoverageOnHover: true,
+	zoomToBoundsOnClick: true,
+        maxClusterRadius: 50
+	});
+markers.addLayer(runLayer);
+map.addLayer(markers);
+/*runLayer.eachLayer(customLayer)*/;
+  })/*.addTo(map)*/;	  
+
+  //var runLayer = omnivore.csv('data.csv', null, customLayer)
+  //.on('ready', function() {
+  // map.fitBounds(runLayer.getBounds());
+  //}).addTo(map);
   controlLayers.addOverlay(customLayer, 'Markers from data.csv');
 
 </script>
